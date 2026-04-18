@@ -1,0 +1,14 @@
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Generated artifacts
+generated/
+.gradle/
+
+# Local environment secrets
+.env
+.env.local
+.env.*.local
