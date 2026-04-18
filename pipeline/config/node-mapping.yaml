@@ -1,0 +1,196 @@
+version: 1
+naming:
+  # <level>/<component>/<semanticName>[#variant][@state][!role]
+  regex: "^(?P<level>screen|layout|component|content|feedback|raw)\\/(?P<component>[A-Za-z][A-Za-z0-9]*)\\/(?P<semanticName>[a-z][A-Za-z0-9]*)(?:#(?P<variant>[a-z][a-zA-Z0-9]*))?(?:@(?P<state>[a-z][a-zA-Z0-9]*))?(?:!(?P<role>[a-z][a-zA-Z0-9]*))?$"
+  allowed_levels:
+    - screen
+    - layout
+    - component
+    - content
+    - feedback
+    - raw
+  allowed_variants:
+    - filled
+    - outlined
+    - ghost
+    - tonal
+    - elevated
+    - danger
+    - success
+    - warning
+    - info
+  allowed_states:
+    - enabled
+    - disabled
+    - pressed
+    - focused
+    - selected
+    - checked
+    - unchecked
+    - error
+    - loading
+  allowed_roles:
+    - primary
+    - secondary
+    - destructive
+    - cta
+    - supporting
+
+components:
+  layout:
+    - column
+    - row
+    - box
+    - constraint
+    - grid
+    - stack
+    - flow
+  navigation:
+    - topAppBar
+    - bottomNavBar
+    - navigationRail
+    - tabBar
+    - pager
+  actions:
+    - button
+    - iconButton
+    - fab
+    - segmentedControl
+    - chip
+    - toggleChip
+  inputs:
+    - textField
+    - passwordField
+    - searchField
+    - checkbox
+    - radio
+    - switch
+    - slider
+    - rangeSlider
+    - stepper
+    - datePicker
+    - timePicker
+    - dropdown
+  data_display:
+    - card
+    - list
+    - listItem
+    - table
+    - badge
+    - avatar
+    - progressLinear
+    - progressCircular
+    - divider
+  media_content:
+    - text
+    - icon
+    - image
+    - illustration
+    - video
+    - lottie
+  overlays:
+    - bottomSheet
+    - dialog
+    - snackbar
+    - toast
+    - tooltip
+    - banner
+  feedback:
+    - loading
+    - error
+    - empty
+    - success
+    - offline
+  screen:
+    - page
+    - bottomSheet
+    - dialog
+  raw:
+    - frame
+
+component_to_level:
+  page: screen
+  bottomSheet: screen
+  dialog: screen
+  column: layout
+  row: layout
+  box: layout
+  constraint: layout
+  grid: layout
+  stack: layout
+  flow: layout
+  topAppBar: component
+  bottomNavBar: component
+  navigationRail: component
+  tabBar: component
+  pager: component
+  button: component
+  iconButton: component
+  fab: component
+  segmentedControl: component
+  chip: component
+  toggleChip: component
+  textField: component
+  passwordField: component
+  searchField: component
+  checkbox: component
+  radio: component
+  switch: component
+  slider: component
+  rangeSlider: component
+  stepper: component
+  datePicker: component
+  timePicker: component
+  dropdown: component
+  card: component
+  list: component
+  listItem: component
+  table: component
+  badge: component
+  avatar: component
+  progressLinear: component
+  progressCircular: component
+  divider: component
+  text: content
+  icon: content
+  image: content
+  illustration: content
+  video: content
+  lottie: content
+  snackbar: component
+  toast: component
+  tooltip: component
+  banner: component
+  loading: feedback
+  error: feedback
+  empty: feedback
+  success: feedback
+  offline: feedback
+  frame: raw
+
+mapping:
+  compose_primitives:
+    column: Column
+    row: Row
+    box: Box
+    constraint: ConstraintLayout
+    grid: LazyVerticalGrid
+    list: LazyColumn
+    listItem: item
+    checkbox: Checkbox
+    text: Text
+    image: Image
+    icon: Icon
+    bottomSheet: ModalBottomSheet
+    dialog: AlertDialog
+
+asset_kinds:
+  - icon
+  - image
+  - illustration
+
+screen_modal_rules:
+  require_nested_modal_screens: true
+  allowed_modal_screen_components:
+    - bottomSheet
+    - dialog

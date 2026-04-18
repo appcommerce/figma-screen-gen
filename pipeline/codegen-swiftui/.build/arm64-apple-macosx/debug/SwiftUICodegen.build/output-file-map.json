@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/ruslan/Project/figma-code/pipeline/codegen-swiftui/.build/arm64-apple-macosx/debug/SwiftUICodegen.build/master.swiftdeps"
+  },
+  "/Users/ruslan/Project/figma-code/pipeline/codegen-swiftui/Sources/SwiftUICodegen/main.swift": {
+    "dependencies": "/Users/ruslan/Project/figma-code/pipeline/codegen-swiftui/.build/arm64-apple-macosx/debug/SwiftUICodegen.build/main.d",
+    "object": "/Users/ruslan/Project/figma-code/pipeline/codegen-swiftui/.build/arm64-apple-macosx/debug/SwiftUICodegen.build/main.swift.o",
+    "swiftmodule": "/Users/ruslan/Project/figma-code/pipeline/codegen-swiftui/.build/arm64-apple-macosx/debug/SwiftUICodegen.build/main~partial.swiftmodule",
+    "swift-dependencies": "/Users/ruslan/Project/figma-code/pipeline/codegen-swiftui/.build/arm64-apple-macosx/debug/SwiftUICodegen.build/main.swiftdeps",
+    "diagnostics": "/Users/ruslan/Project/figma-code/pipeline/codegen-swiftui/.build/arm64-apple-macosx/debug/SwiftUICodegen.build/main.dia"
+  }
+}

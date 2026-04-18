@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+pipeline/src/figma_compose_pipeline.egg-info/PKG-INFO
+pipeline/src/figma_compose_pipeline.egg-info/SOURCES.txt
+pipeline/src/figma_compose_pipeline.egg-info/dependency_links.txt
+pipeline/src/figma_compose_pipeline.egg-info/requires.txt
+pipeline/src/figma_compose_pipeline.egg-info/top_level.txt

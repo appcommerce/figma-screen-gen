@@ -1,0 +1,73 @@
+{
+  "nodes": [
+    {
+      "id": "1:1",
+      "type": "FRAME",
+      "name": "screen/page/productDetails",
+      "absoluteBoundingBox": { "x": 0, "y": 0, "width": 360, "height": 800 },
+      "layoutMode": "VERTICAL",
+      "itemSpacing": 12,
+      "paddingTop": 16,
+      "paddingBottom": 16,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "children": [
+        {
+          "id": "1:2",
+          "type": "FRAME",
+          "name": "layout/column/content",
+          "absoluteBoundingBox": { "x": 16, "y": 16, "width": 328, "height": 620 },
+          "layoutMode": "VERTICAL",
+          "itemSpacing": 8,
+          "children": [
+            {
+              "id": "1:3",
+              "type": "TEXT",
+              "name": "content/text/title",
+              "characters": "Product details",
+              "absoluteBoundingBox": { "x": 16, "y": 16, "width": 200, "height": 24 },
+              "style": { "fontSize": 20, "lineHeightPx": 24 }
+            },
+            {
+              "id": "1:4",
+              "type": "FRAME",
+              "name": "component/checkbox/subscribe@checked!primary",
+              "absoluteBoundingBox": { "x": 16, "y": 52, "width": 24, "height": 24 }
+            },
+            {
+              "id": "1:5",
+              "type": "VECTOR",
+              "name": "content/icon/cart",
+              "absoluteBoundingBox": { "x": 16, "y": 88, "width": 24, "height": 24 }
+            }
+          ]
+        },
+        {
+          "id": "1:6",
+          "type": "FRAME",
+          "name": "screen/bottomSheet/selectSize",
+          "absoluteBoundingBox": { "x": 0, "y": 500, "width": 360, "height": 300 },
+          "layoutMode": "VERTICAL",
+          "children": [
+            {
+              "id": "1:7",
+              "type": "FRAME",
+              "name": "layout/column/content",
+              "absoluteBoundingBox": { "x": 0, "y": 500, "width": 360, "height": 300 },
+              "layoutMode": "VERTICAL",
+              "children": [
+                {
+                  "id": "1:8",
+                  "type": "TEXT",
+                  "name": "content/text/sheetTitle",
+                  "characters": "Select size",
+                  "absoluteBoundingBox": { "x": 16, "y": 516, "width": 120, "height": 24 }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

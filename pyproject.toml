@@ -1,0 +1,25 @@
+[project]
+name = "figma-compose-pipeline"
+version = "0.1.0"
+description = "Figma -> JSON IR -> YAML DSL -> Jetpack Compose pipeline"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "PyYAML>=6.0.2",
+  "jsonschema>=4.23.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "pipeline/src"}
+
+[tool.setuptools.packages.find]
+where = ["pipeline/src"]

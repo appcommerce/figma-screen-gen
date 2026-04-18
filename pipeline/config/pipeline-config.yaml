@@ -1,0 +1,39 @@
+figma:
+  file_key: "HIhcqVkJZAhUxT1kfXrmDQ"
+  node_ids:
+    - "4007:14984"
+  base_url: "https://api.figma.com/v1"
+  token_env: "FIGMA_TOKEN"
+
+pipeline:
+  package_name: "com.example.generated"
+  target: "compose"
+  enable_assets: false
+  fail_on_naming_error: true
+  fail_on_naming_warning: true
+  clean_before_generate: true
+  swiftui_codegen_backend: "native_swift"
+  swiftui_codegen_executable: "SwiftUICodegen"
+  swiftui_module_name: "GeneratedSwiftUI"
+  legacy_cleanup_paths:
+    - "pipeline/generated_ir"
+    - "pipeline/generated_dsl"
+    - "pipeline/reports"
+    - "pipeline/assets"
+    - "pipeline/snapshots"
+    - "app/src/main/java/com/example/generated"
+
+paths:
+  naming_config: "pipeline/config/node-mapping.yaml"
+  ir_schema: "pipeline/schemas/ui_ir.schema.json"
+  dsl_schema: "pipeline/schemas/ui_dsl.schema.yaml"
+  reports_dir: "generated/reports"
+  generated_ir_dir: "generated/ir"
+  generated_dsl_dir: "generated/dsl"
+  drawable_dir: "generated/resources/drawable"
+  ios_assets_dir: "generated/resources/ios/Assets.xcassets"
+  svg_dir: "generated/assets/svg"
+  snapshots_dir: "generated/snapshots"
+  generated_compose_dir: "generated/compose/src/main/java/com/example/generated"
+  generated_swiftui_dir: "generated/swiftui"
+  swiftui_codegen_package_dir: "pipeline/codegen-swiftui"

@@ -1,0 +1,6 @@
+figma:
+  file_key: "demo_file"
+  figma_json: "pipeline/tests/fixtures/sample_figma_nodes.json"
+
+pipeline:
+  package_name: "com.example.generated"

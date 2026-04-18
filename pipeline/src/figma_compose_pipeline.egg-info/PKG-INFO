@@ -1,0 +1,114 @@
+Metadata-Version: 2.4
+Name: figma-compose-pipeline
+Version: 0.1.0
+Summary: Figma -> JSON IR -> YAML DSL -> Jetpack Compose pipeline
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: PyYAML>=6.0.2
+Requires-Dist: jsonschema>=4.23.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.3.0; extra == "dev"
+
+# Figma -> Compose Pipeline
+
+Production-oriented scaffolding for converting Figma nodes into:
+
+1. normalized JSON IR
+2. YAML DSL
+3. generated Jetpack Compose Kotlin stubs
+
+Also includes asset export/conversion pipeline and quality gates.
+
+## Quick start
+
+```bash
+python -m pip install -e ".[dev]"
+python -m pipeline.src.generate_ui --help
+```
+
+## Command
+
+```bash
+python -m pipeline.src.generate_ui \
+  --config pipeline/config/pipeline-config.yaml \
+  --figma-json pipeline/tests/fixtures/sample_figma_nodes.json \
+  --log-level INFO \
+  --out-root .
+```
+
+### Run with Figma REST API (production mode)
+
+```bash
+export FIGMA_TOKEN=your_figma_personal_access_token
+python -m pipeline.src.generate_ui \
+  --config pipeline/config/pipeline-config.yaml \
+  --out-root .
+```
+
+All Figma constants are in:
+
+- `pipeline/config/pipeline-config.yaml`
+
+You can still override config values from CLI:
+
+```bash
+python -m pipeline.src.generate_ui \
+  --config pipeline/config/pipeline-config.yaml \
+  --file-key another_file_key \
+  --node 123:456
+```
+
+## Gradle pipeline tasks
+
+Run full pipeline as sequential Gradle tasks:
+
+```bash
+./gradlew pipelineRunAll \
+  -PfigmaConfig=pipeline/config/pipeline-config.yaml
+```
+
+The pipeline keeps artifacts inside `generated/` and does not publish/copy into `app/` automatically.
+Before generation it automatically cleans both `generated/` and legacy generated folders.
+
+Run from local fixture JSON:
+
+```bash
+./gradlew pipelineRunAll \
+  -PfigmaConfig=pipeline/config/pipeline-config.yaml \
+  -PfigmaJson=pipeline/tests/fixtures/sample_figma_nodes.json \
+  -PfigmaFileKey=demo_file
+```
+
+Useful properties:
+
+- `-PpythonBin=.venv/bin/python`
+- `-PfigmaConfig=pipeline/config/pipeline-config.yaml`
+- `-PoutRoot=/Users/ruslan/Project/figma-code`
+- `-PpackageName=com.example.generated`
+- `-PrefreshVenv=true` (force reinstall dependencies)
+
+Pipeline logs every stage with timings directly in Gradle output (download, normalize, assets, DSL, codegen, quality checks).
+
+## Start from Kotlin main
+
+You can run `compose.PipelineMainKt` from IDE (or Gradle `:pipeline:codegen-kotlin:run`) with args:
+
+```bash
+--config pipeline/config/pipeline-config.yaml
+```
+
+## Where generation happens
+
+- Pipeline orchestration: `pipeline/src/generate_ui.py`
+- Compose code generation: `pipeline/src/compose_generator.py` in `ComposeGenerator.generate(...)`
+
+## Generated artifacts layout
+
+All stage outputs are stored under `generated/`:
+
+- `generated/ir/ui_ir.json`
+- `generated/dsl/ui_dsl.yaml`
+- `generated/reports/*.json`
+- `generated/assets/svg/*.svg`
+- `generated/resources/drawable/*.xml`
+- `generated/compose/src/main/java/...`

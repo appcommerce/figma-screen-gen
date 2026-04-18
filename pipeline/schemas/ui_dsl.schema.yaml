@@ -1,0 +1,100 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://example.com/ui_dsl.schema.yaml"
+title: UI DSL
+type: object
+required:
+  - version
+  - screens
+properties:
+  version:
+    type: string
+  screens:
+    type: array
+    minItems: 1
+    items:
+      $ref: "#/$defs/dslNode"
+  assets:
+    type: array
+    items:
+      type: object
+      required: [resourceName, assetKind]
+      properties:
+        resourceName:
+          type: string
+        assetKind:
+          type: string
+        figmaNodeId:
+          type: string
+      additionalProperties: false
+  metadata:
+    type: object
+    additionalProperties: true
+additionalProperties: false
+$defs:
+  dslNode:
+    type: object
+    required:
+      - id
+      - node
+      - name
+      - props
+      - children
+    properties:
+      id:
+        type: string
+      node:
+        type: string
+      name:
+        type: string
+      variant:
+        type: string
+      state:
+        type: string
+      role:
+        type: string
+      props:
+        type: object
+        properties:
+          widthDp:
+            type: number
+          heightDp:
+            type: number
+          xDp:
+            type: number
+          yDp:
+            type: number
+          padding:
+            type: object
+            properties:
+              leftDp: { type: number }
+              rightDp: { type: number }
+              topDp: { type: number }
+              bottomDp: { type: number }
+            additionalProperties: false
+          spacingDp:
+            type: number
+          text:
+            type: string
+          tokenRef:
+            type: string
+          styleRef:
+            type: string
+          testTag:
+            type: string
+          contentDescription:
+            type: string
+          assetRef:
+            type: string
+          resourceName:
+            type: string
+          assetKind:
+            type: string
+          layout:
+            type: string
+            enum: [row, column, box, constraint, grid]
+        additionalProperties: true
+      children:
+        type: array
+        items:
+          $ref: "#/$defs/dslNode"
+    additionalProperties: false

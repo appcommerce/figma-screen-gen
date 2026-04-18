@@ -1,0 +1,315 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/ui_ir.schema.json",
+  "title": "UI Intermediate Representation",
+  "type": "object",
+  "required": [
+    "version",
+    "source",
+    "screens"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "fileKey",
+        "generatedAt"
+      ],
+      "properties": {
+        "fileKey": {
+          "type": "string"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "nodeIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "screens": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      },
+      "minItems": 1
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assetMetadata"
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/issue"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "rect": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "HORIZONTAL",
+            "VERTICAL",
+            "GRID"
+          ]
+        },
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "horizontal": {
+              "type": "string"
+            },
+            "vertical": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "horizontal",
+            "vertical"
+          ],
+          "additionalProperties": false
+        },
+        "padding": {
+          "type": "object",
+          "properties": {
+            "left": {
+              "type": "number"
+            },
+            "right": {
+              "type": "number"
+            },
+            "top": {
+              "type": "number"
+            },
+            "bottom": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "itemSpacing": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "style": {
+      "type": "object",
+      "properties": {
+        "fill": {
+          "type": "string"
+        },
+        "textStyleRef": {
+          "type": "string"
+        },
+        "fontSize": {
+          "type": "number"
+        },
+        "lineHeight": {
+          "type": "number"
+        },
+        "cornerRadius": {
+          "type": "number"
+        },
+        "opacity": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "naming": {
+      "type": "object",
+      "required": [
+        "rawName",
+        "level",
+        "component",
+        "semanticName"
+      ],
+      "properties": {
+        "rawName": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "component": {
+          "type": "string"
+        },
+        "semanticName": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "valid": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "assetMetadata": {
+      "type": "object",
+      "required": [
+        "figmaNodeId",
+        "assetKind",
+        "exportFormat",
+        "resourceName",
+        "contentHash"
+      ],
+      "properties": {
+        "figmaNodeId": {
+          "type": "string"
+        },
+        "assetKind": {
+          "type": "string",
+          "enum": [
+            "icon",
+            "image",
+            "illustration"
+          ]
+        },
+        "exportFormat": {
+          "type": "string",
+          "enum": [
+            "SVG"
+          ]
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "contentHash": {
+          "type": "string"
+        },
+        "svgPath": {
+          "type": "string"
+        },
+        "drawableXmlPath": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "issue": {
+      "type": "object",
+      "required": [
+        "severity",
+        "message",
+        "nodeId"
+      ],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "warning",
+            "error"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "nodeId": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "node": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "name",
+        "naming",
+        "bounds",
+        "layout",
+        "style",
+        "children"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "naming": {
+          "$ref": "#/$defs/naming"
+        },
+        "bounds": {
+          "$ref": "#/$defs/rect"
+        },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "style": {
+          "$ref": "#/$defs/style"
+        },
+        "text": {
+          "type": "string"
+        },
+        "assetRef": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
