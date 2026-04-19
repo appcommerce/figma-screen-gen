@@ -73,7 +73,8 @@ components:
     - dropdown
   data_display:
     - card
-    - list
+    - listVertical
+    - listHorizontal
     - listItem
     - table
     - badge
@@ -143,7 +144,8 @@ component_to_level:
   timePicker: component
   dropdown: component
   card: component
-  list: component
+  listVertical: component
+  listHorizontal: component
   listItem: component
   table: component
   badge: component
@@ -175,7 +177,8 @@ mapping:
     box: Box
     constraint: ConstraintLayout
     grid: LazyVerticalGrid
-    list: LazyColumn
+    listVertical: LazyColumn
+    listHorizontal: LazyRow
     listItem: item
     checkbox: Checkbox
     text: Text

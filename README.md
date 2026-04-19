@@ -155,8 +155,8 @@ Both mains accept the same CLI args:
 
 ## Where generation happens
 
-- Pipeline orchestration: `pipeline/src/generate_ui.py`
-- Compose code generation: `pipeline/src/compose_generator.py` in `ComposeGenerator.generate(...)`
+- Pipeline orchestration (Figma -> IR -> DSL -> validation): `pipeline/src/generate_ui.py`
+- Compose code generation (native KotlinPoet): `pipeline/codegen-kotlin/src/main/kotlin/compose/DslToComposeGenerator.kt`
 - Native SwiftUI code generation: `pipeline/codegen-swiftui/Sources/SwiftUICodegen/main.swift`
 
 ## SwiftUI DSL mapping

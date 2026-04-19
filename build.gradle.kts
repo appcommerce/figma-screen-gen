@@ -51,7 +51,7 @@ tasks.register<Exec>("pipelineBootstrap") {
 
 tasks.register<Exec>("pipelineGenerateUi") {
     group = "pipeline"
-    description = "Clean and run Figma -> JSON -> DSL -> Compose pipeline"
+    description = "Clean and run Figma -> JSON -> DSL (with validation) pipeline"
     dependsOn("pipelineBootstrap", "pipelineCleanGenerated")
     workingDir = project.projectDir
 
@@ -90,7 +90,27 @@ tasks.register<Exec>("pipelineGenerateUi") {
 tasks.register("pipelineRunAll") {
     group = "pipeline"
     description = "Bootstrap and run full UI pipeline"
-    dependsOn("pipelineGenerateUi")
+    dependsOn("pipelineGenerateUi", "pipelineComposeCodegen")
+}
+
+tasks.register<JavaExec>("pipelineComposeCodegen") {
+    group = "pipeline"
+    description = "Run KotlinPoet Compose codegen from generated DSL"
+    dependsOn(":pipeline:codegen-kotlin:classes", "pipelineGenerateUi")
+    onlyIf { target.get() == "compose" }
+    classpath = project(":pipeline:codegen-kotlin")
+        .extensions
+        .getByType(org.gradle.api.tasks.SourceSetContainer::class.java)
+        .named("main")
+        .get()
+        .runtimeClasspath
+    mainClass.set("compose.DslToComposeGeneratorKt")
+
+    doFirst {
+        val dslPath = project.layout.projectDirectory.file("generated/dsl/ui_dsl.yaml").asFile.absolutePath
+        val outputDir = project.layout.projectDirectory.dir("generated/compose/src/main/java").asFile.absolutePath
+        args(dslPath, outputDir, packageName.get())
+    }
 }
 
 tasks.register<Exec>("pipelineGenerateComposeUi") {

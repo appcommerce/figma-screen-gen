@@ -1,5 +1,6 @@
 package compose
 
+import org.yaml.snakeyaml.Yaml
 import java.io.File
 
 internal object PipelineLauncher {
@@ -13,6 +14,7 @@ internal object PipelineLauncher {
         val fileKey = cli["file-key"]
         val figmaJson = cli["figma-json"]
         val nodeId = cli["node"]
+        val resolvedTarget = if (target == "compose") "compose" else target
 
         val command = mutableListOf(
             pythonBin,
@@ -23,8 +25,11 @@ internal object PipelineLauncher {
             "--out-root",
             outRoot,
             "--target",
-            target,
+            resolvedTarget,
         )
+        if (target == "compose") {
+            command += "--validate-only"
+        }
         if (swiftUiBackend != null) {
             command += listOf("--swiftui-backend", swiftUiBackend)
         }
@@ -48,6 +53,20 @@ internal object PipelineLauncher {
         val code = process.waitFor()
         if (code != 0) {
             error("Pipeline process failed with exit code $code")
+        }
+
+        if (target == "compose") {
+            val composeInputs = resolveComposeCodegenInputs(
+                root = root,
+                configPath = configPath,
+                outRoot = outRoot,
+                packageNameOverride = packageName,
+            )
+            runDslToComposeCodegen(
+                dslPath = composeInputs.dslPath,
+                outputDir = composeInputs.outputDir,
+                packageBase = composeInputs.packageName,
+            )
         }
     }
 
@@ -79,4 +98,43 @@ internal object PipelineLauncher {
         }
         error("Cannot locate project root from ${start.absolutePath}")
     }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun resolveComposeCodegenInputs(
+        root: File,
+        configPath: String,
+        outRoot: String,
+        packageNameOverride: String?,
+    ): ComposeCodegenInputs {
+        val outRootFile = File(outRoot)
+        val configFile = File(if (File(configPath).isAbsolute) configPath else File(root, configPath).path)
+        val configMap = if (configFile.exists()) {
+            Yaml().load<Map<String, Any>>(configFile.readText()) ?: emptyMap()
+        } else {
+            emptyMap()
+        }
+        val pipeline = configMap["pipeline"] as? Map<String, Any> ?: emptyMap()
+        val paths = configMap["paths"] as? Map<String, Any> ?: emptyMap()
+
+        val packageName = packageNameOverride
+            ?: pipeline["package_name"]?.toString()
+            ?: "com.example.generated"
+        val defaultOutput = "generated/compose/src/main/java"
+        val outputRootRaw = paths["generated_compose_dir"]?.toString() ?: defaultOutput
+        val dslPathRaw = paths["generated_dsl_dir"]?.toString()?.let { "$it/ui_dsl.yaml" } ?: "generated/dsl/ui_dsl.yaml"
+
+        val outputDir = if (File(outputRootRaw).isAbsolute) File(outputRootRaw) else File(outRootFile, outputRootRaw)
+        val dslPath = if (File(dslPathRaw).isAbsolute) File(dslPathRaw) else File(outRootFile, dslPathRaw)
+        return ComposeCodegenInputs(
+            dslPath = dslPath,
+            outputDir = outputDir,
+            packageName = packageName,
+        )
+    }
+
+    private data class ComposeCodegenInputs(
+        val dslPath: File,
+        val outputDir: File,
+        val packageName: String,
+    )
 }

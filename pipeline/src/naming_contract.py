@@ -126,7 +126,6 @@ class NamingContract:
                     node_id=node_id,
                 )
             )
-
         has_error = any(issue.severity == "error" for issue in issues)
         return ParsedName(
             raw_name=name,

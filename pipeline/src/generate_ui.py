@@ -14,7 +14,6 @@ from typing import Any
 import yaml
 
 from .asset_pipeline import AssetPipeline
-from .compose_generator import ComposeGenerator
 from .figma_api import FigmaApiClient, FigmaApiConfig
 from .figma_to_json import FigmaToJsonConverter
 from .json_to_dsl import JsonToDslConverter, dump_json
@@ -181,17 +180,17 @@ def main() -> None:
         logger.info("DSL: %s", dsl_path)
         return
 
-    generated_compose_files: list[Path] = []
+    generated_compose_files: list[str] = []
     generated_swiftui_files: list[Path] = []
     target = settings["pipeline"]["target"]
     if target == "compose":
-        with _stage(logger, "dsl_to_compose"):
-            compose_generator = ComposeGenerator(
-                output_root=generated_compose_dir,
-                package_name=settings["pipeline"]["package_name"],
+        with _stage(logger, "dsl_to_compose_delegated"):
+            logger.info(
+                "Compose codegen delegated to KotlinPoet. dsl=%s output_root=%s package=%s",
+                dsl_path,
+                generated_compose_dir,
+                settings["pipeline"]["package_name"],
             )
-            generated_compose_files = compose_generator.generate(dsl)
-            logger.info("Compose generated files: %s", len(generated_compose_files))
     elif target == "swiftui":
         with _stage(logger, "dsl_to_swiftui"):
             backend = settings["pipeline"]["swiftui_codegen_backend"]
@@ -219,9 +218,15 @@ def main() -> None:
             "irSnapshot": ir_snapshot,
             "dslSnapshot": dsl_snapshot,
             "target": target,
-            "generatedComposeFiles": [str(x) for x in generated_compose_files],
+            "generatedComposeFiles": generated_compose_files,
             "generatedSwiftUiFiles": [str(x) for x in generated_swiftui_files],
             "assetRefValidationIssues": unresolved_asset_refs,
+            "composeCodegen": {
+                "delegated": True,
+                "dslPath": str(dsl_path),
+                "outputRoot": str(generated_compose_dir),
+                "packageName": settings["pipeline"]["package_name"],
+            },
         }
         quality.write_pipeline_report(quality_report)
         logger.info("Quality report issues: %s", len(unresolved_asset_refs))
@@ -264,7 +269,7 @@ def _resolve_settings(args: argparse.Namespace, config: dict[str, Any], root: Pa
     paths_cfg = config.get("paths", {})
 
     package_name = args.package_name or pipeline_cfg.get("package_name") or "com.example.generated"
-    generated_compose_default = f"generated/compose/src/main/java/{package_name.replace('.', '/')}"
+    generated_compose_default = "generated/compose/src/main/java"
     resolved = {
         "figma": {
             "file_key": args.file_key or figma_cfg.get("file_key"),

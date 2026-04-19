@@ -34,6 +34,6 @@ paths:
   ios_assets_dir: "generated/resources/ios/Assets.xcassets"
   svg_dir: "generated/assets/svg"
   snapshots_dir: "generated/snapshots"
-  generated_compose_dir: "generated/compose/src/main/java/com/example/generated"
+  generated_compose_dir: "generated/compose/src/main/java"
   generated_swiftui_dir: "generated/swiftui"
   swiftui_codegen_package_dir: "pipeline/codegen-swiftui"
