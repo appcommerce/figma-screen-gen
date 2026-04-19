@@ -185,14 +185,14 @@ tasks.register<Exec>("pipelineGenerateSwiftUi") {
 
 tasks.register("pipelineRunComposeMain") {
     group = "pipeline"
-    description = "Run compose.ComposePipelineMain from codegen-kotlin module"
-    dependsOn(":pipeline:codegen-kotlin:runComposePipelineMain")
+    description = "Run compose.ComposePipelineMain from launcher module"
+    dependsOn(":launcher:runComposePipelineMain")
 }
 
 tasks.register("pipelineRunSwiftUiMain") {
     group = "pipeline"
-    description = "Run compose.SwiftUiPipelineMain from codegen-kotlin module"
-    dependsOn(":pipeline:codegen-kotlin:runSwiftUiPipelineMain")
+    description = "Run compose.SwiftUiPipelineMain from launcher module"
+    dependsOn(":launcher:runSwiftUiPipelineMain")
 }
 
 tasks.register<Exec>("pipelineValidateDsl") {

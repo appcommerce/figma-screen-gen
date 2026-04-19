@@ -140,6 +140,8 @@ You can run separate mains from IDE:
 - `compose.ComposePipelineMain` (Compose target)
 - `compose.SwiftUiPipelineMain` (SwiftUI target via native Swift backend)
 
+These launcher mains are located in `launcher/src/main/kotlin/compose`.
+
 Or from Gradle:
 
 ```bash
@@ -156,6 +158,7 @@ Both mains accept the same CLI args:
 ## Where generation happens
 
 - Pipeline orchestration (Figma -> IR -> DSL -> validation): `pipeline/src/generate_ui.py`
+- Pipeline launch entrypoints (Kotlin mains): `launcher/src/main/kotlin/compose`
 - Compose code generation (native KotlinPoet): `pipeline/codegen-kotlin/src/main/kotlin/compose/DslToComposeGenerator.kt`
 - Native SwiftUI code generation: `pipeline/codegen-swiftui/Sources/SwiftUICodegen/main.swift`
 
